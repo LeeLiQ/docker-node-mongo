@@ -1,15 +1,25 @@
-version: '3'
+version: "3"
+
 services:
+  # we can call it app or web or node or whatever
   app:
     container_name: docker-node-mongo
+    # if the app failed, we want it to restart always.
     restart: always
+    # find Dockerfile in the current dir to build a container since we are not using
+    # existing image. We are building our image by ourselves.
     build: .
+    # this is the mapping relation b/w outside and inside
     ports:
-      - '80:3000'
+      - "80:3000"
+    # this tells our app service is linked with the mongo service.
     links:
       - mongo
   mongo:
+    # the name of the container will be used in the app where a connection is used. Check index.js for example
     container_name: mongo
+    # the reason we don't use build here is because we are not building our own image from
+    # Dockerfile. We pull it from somewhere else.
     image: mongo
     ports:
-      - '27017:27017'
+      - "27017:27017"
